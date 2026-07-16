@@ -1,0 +1,162 @@
+ffaa:123c:aa11:abcd::6262
+
+2faa:123c:aa11:abcd::6262
+
+config t
+   hostname COREbaba-62
+   enable secret pass
+   service password-encryption
+   no logging console
+   no ip domain-lookup
+   line console 0
+     password pass
+     login
+     exec-timeout 0 0
+    line vty 0 14
+      password pass
+      login
+      exec-timeout 0 0
+   Int Gi 0/1
+     no shutdown
+	  no switchport
+	  ip add 10.11.11.4 255.255.255.0
+   Int Vlan 1
+     no shutdown
+	 ip add 10.11.1.4 255.255.255.0
+	 description MGMTDATA
+   Int Vlan 10
+     no shutdown
+	 ip add 10.11.10.4 255.255.255.0
+	 description WIRELESS
+   Int Vlan 50
+     no shutdown
+	 ip add 10.11.50.4 255.255.255.0
+	 description IPCCTV
+   Int Vlan 100
+     no shutdown
+	 ip add 10.11.100.4 255.255.255.0
+	 description VOICEVLAN
+end
+
+
+
+
+
+3.dns domain name host list:
+
+dc 10.62.1.8
+cb 10.62.1.4
+c1 10.62.50.6
+c2 10.62.50.8
+wc 10.62.10.62
+cname alias
+fs dc.azure62..com
+www
+smtp
+imap
+pop
+ns
+
+
+3.Lakisweldoskillno3: setup file server and ftp server
+active server port 389
+file server 445/139 + NAS server 2049
+web server 80/443 + ftp server 20/21
+
+
+switch
+
+copy flash: ftp:
+ config text
+fs.azuread62.com
+
+copy flash: ftp:
+ vlan.dat
+fs.azuread62.com
+
+run - ip - UNS
+
+
+
+
+
+
+
+config t
+   hostname EDGE-62
+   enable secret pass
+   service password-encryption
+   no logging console
+   no ip domain-lookup
+   line console 0
+     password pass
+     login
+     exec-timeout 0 0
+    line vty 0 14
+      password pass
+      login
+      exec-timeout 0 0
+   Int Gi 0/0/0
+     description FIBEROPTIC-TO-SWITCH
+     ip add 10.62.62.1 255.255.255.0
+	 no shutdown
+   Int Gi 0/0/1
+     description PLDT-ME-WAN
+	 ip add 200.0.0.62 255.255.255.0
+	 no shutdown
+   Int Loopback 0
+     description VIRTUALIP-FOR-ROUTING
+	 ip add 62.0.0.1 255.255.255.255
+ end
+
+
+
+!@EDGE
+
+conf t
+ router ospf 1
+ network 62.0.0.1 0.0.0.0 area 0
+ network 200.0.0.0 0.0.0.255 area 0
+ network 10.62.62.0 0.0.0.255 area 0
+end
+sh ip route ospf
+
+
+!@COREBABA
+
+conf t
+ ip routing
+ no router ospf 1
+ router ospf 1
+ network 10.62.0.0 0.0.255.255 area 0
+end
+show ip route ospf
+show ip route ospf
+
+virtual winserver
+static route on pc
+cmd - route add IP add subnet IP
+
+route add 10.0.0.0
+
+source: d:\sources\sxs
+___________________________________________________________
+!@Manage Service Provider
+
+paste to
+
+Browser
+
+Admin GUI
+http://208.8.8.133/otrs/index.pl
+admin
+C1sc0123
+
+Customer Interface:
+http://208.8.8.133/otrs/customer.pl
+user1
+C1sc0123
+
+
+
+
